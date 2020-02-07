@@ -406,7 +406,7 @@ def quad_function_r_ddot_vec(e_vec,j_vec,r_vec,r_p5_div,r_p7_div):
     e_vec_dot_r_vec = np.dot(e_vec,r_vec)
     j_vec_dot_r_vec = np.dot(j_vec,r_vec)
     
-    return 0.25*( -3.0*(1.0 - 3.0*e_p2)*r_vec*r_p5_div + 30.0*e_vec_dot_r_vec*e_vec*r_p5_div - 75.0*e_vec_dot_r_vec*e_vec_dot_r_vec*r_vec*r_p7_div - 6.0*j_vec_dot_r_vec*j_vec*r_p5_div + 15.0*j_vec_dot_r_vec*j_vec_dot_r_vec*r_vec*r_p7_div )
+    return 0.25*( -3.0*(1.0 - 6.0*e_p2)*r_vec*r_p5_div + 30.0*e_vec_dot_r_vec*e_vec*r_p5_div - 75.0*e_vec_dot_r_vec*e_vec_dot_r_vec*r_vec*r_p7_div - 6.0*j_vec_dot_r_vec*j_vec*r_p5_div + 15.0*j_vec_dot_r_vec*j_vec_dot_r_vec*r_vec*r_p7_div )
 
 def RHS_function(RHR_vec, theta, *ODE_args):
     """

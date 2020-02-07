@@ -135,9 +135,9 @@ def plot_function_series(cmd_args,data_series):
 
     
     plot1.plot(plot_values,data_series_av["Delta_e1s"],color='k',linestyle='solid',linewidth=3,label="$\mathrm{Inner\,averaged}$")
-    if args.do_nbody == True:
+    if cmd_args.do_nbody == True:
         plot1.scatter(plot_values,data_series_nbody["Delta_e1s"],color='g',label="$\mathrm{Four-body}$")
-    elif args.compare_backreaction==True:
+    elif cmd_args.compare_backreaction==True:
         plot1.plot(plot_values,data_series_nbody["Delta_e1s"],color='k',linestyle='dashed',label="$\mathrm{Inner\,averaged\,(no\,backreaction)}$")
     plot2.plot(plot_values,np.fabs(data_series_av["Delta_e2s"]),color='k',linestyle='solid',linewidth=3)
     if args.do_nbody == True:

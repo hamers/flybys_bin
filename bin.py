@@ -30,7 +30,6 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser()
 
-    ### TO DO: update help descriptions ###
     parser.add_argument("--mode",                           type=float,     dest="mode",                        default=1,              help="mode -- 1: single integration -- 2-5: series of integrations (2: changing a2; 3: changing q2; 4: changing i2; 5: changing a1 -- -1: make overview plot")
     parser.add_argument("--name",                           type=str,       dest="name",                        default="test01",       help="name used in filenames of data files and figures")
     parser.add_argument("--m1",                             type=float,     dest="m1",                          default=10.0,           help="Primary mass")
@@ -87,7 +86,7 @@ def parse_arguments():
     add_bool_arg(parser, 'include_1PN_terms',               default=False,         help="include 1PN terms")
     add_bool_arg(parser, 'do_nbody',                        default=True,          help="Do N-body integrations as well as partially averaged")
     add_bool_arg(parser, 'include_backreaction',            default=True,          help="Include backreaction of outer orbit on inner orbits in inner-averaged integrations")
-    add_bool_arg(parser, 'compare_backreaction',            default=False,         help="Special model comparing cases with backreaction included and not included")
+    add_bool_arg(parser, 'compare_backreaction',            default=False,         help="Special mode comparing cases with backreaction included and not included")
     
     args = parser.parse_args()
 
