@@ -28,7 +28,7 @@ def add_bool_arg(parser, name, default=False,help=None):
 
 def parse_arguments():
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument("--mode",                           type=float,     dest="mode",                        default=1,              help="mode -- 1: single integration -- 2-5: series of integrations (2: changing a2; 3: changing q2; 4: changing i2; 5: changing a1 -- -1: make overview plot")
     parser.add_argument("--name",                           type=str,       dest="name",                        default="test01",       help="name used in filenames of data files and figures")
@@ -48,7 +48,7 @@ def parse_arguments():
     parser.add_argument("--a1_max",                         type=float,     dest="a1_max",                      default=3.0,            help="Maximum a1 value in mode 5")
     parser.add_argument("--a2",                             type=float,     dest="a2",                          default=1.0,            help="Orbit 2 semimajor axis")    
     parser.add_argument("--a2_min",                         type=float,     dest="a2_min",                      default=0.5,            help="Minimum a2 value in mode 2")    
-    parser.add_argument("--a2_max",                         type=float,     dest="a2_max",                      default=3.0,            help="Minimum a2 value in mode 2")    
+    parser.add_argument("--a2_max",                         type=float,     dest="a2_max",                      default=3.0,            help="Maximum a2 value in mode 2")    
     parser.add_argument("--e1",                             type=float,     dest="e1",                          default=0.01,           help="Orbit 1 eccentricity")    
     parser.add_argument("--e2",                             type=float,     dest="e2",                          default=0.01,           help="Orbit 2 eccentricity")    
     parser.add_argument("--e3",                             type=float,     dest="e3",                          default=1.5,            help="Outer orbit eccentricity (>=1.0)")    
@@ -58,10 +58,10 @@ def parse_arguments():
     parser.add_argument("--i2_max",                         type=float,     dest="i2_max",                      default=70.0*np.pi/180.0,help="Maximum i2 value (rad; mode 4)")    
     parser.add_argument("--AP1",                            type=float,     dest="AP1",                         default=np.pi/4.0,      help="Orbit 1 argument of periapsis (rad)")
     parser.add_argument("--AP2",                            type=float,     dest="AP2",                         default=0.01*np.pi/180.0,help="Orbit 2 argument of periapsis (rad)")
-    parser.add_argument("--LAN1",                           type=float,     dest="LAN1",                        default=0.01*np.pi/180.0,help="Orbit 1 argument of periapsis (rad)")
-    parser.add_argument("--LAN2",                           type=float,     dest="LAN2",                        default=0.01*np.pi/180.0,help="Orbit 2 argument of periapsis (rad)")
+    parser.add_argument("--LAN1",                           type=float,     dest="LAN1",                        default=0.01*np.pi/180.0,help="Orbit 1 longitude of the ascending node (rad)")
+    parser.add_argument("--LAN2",                           type=float,     dest="LAN2",                        default=0.01*np.pi/180.0,help="Orbit 2 longitude of the ascending node (rad)")
     parser.add_argument("--TA1",                            type=float,     dest="TA1",                         default=0.01*np.pi/180.0,help="Orbit 1 true anomaly (rad)")
-    parser.add_argument("--TA2",                            type=float,     dest="TA2",                         default=0.01*np.pi/180.0,help="Binary argument of periapsis")
+    parser.add_argument("--TA2",                            type=float,     dest="TA2",                         default=0.01*np.pi/180.0,help="Orbit 2 true anomaly (rad)")
     parser.add_argument("--TA3_fraction",                   type=float,     dest="TA3_fraction",                default=0.98,           help="Initial perturber true anomaly, expressed as a fraction of -\arccos(-1/e3). Increase if the  numerical integrations do not seem converged. ")
     parser.add_argument("--N_steps",                        type=int,       dest="N_steps",                     default=3000,           help="Number of external (print) output steps")
     parser.add_argument("--mxstep",                         type=int,       dest="mxstep",                      default=1000000,        help="Maximum number of internal steps taken in the ODE integration. Increase if ODE integrator give mstep errors. ")    
@@ -74,19 +74,18 @@ def parse_arguments():
 
     
     ### boolean arguments ###
-    add_bool_arg(parser, 'verbose',                         default=False,          help="Verbose terminal output")
-    add_bool_arg(parser, 'calc',                            default=True,          help="Do calculation (and save results). If False, will try to load previous results")
-    add_bool_arg(parser, 'plot',                            default=True,         help="Make plots")
-    add_bool_arg(parser, 'plot_fancy',                      default=False,         help="Use LaTeX for plot labels (slower but nicer fonts)")
-    add_bool_arg(parser, 'show',                            default=True,          help="Show plots")
-    add_bool_arg(parser, 'quad',                            default=True,          help="Include quadrupole-order terms")
+    add_bool_arg(parser, 'verbose',                         default=False,         help="verbose terminal output")
+    add_bool_arg(parser, 'calc',                            default=True,          help="do calculation (and save results). If False, will try to load previous results")
+    add_bool_arg(parser, 'plot',                            default=True,          help="make plots")
+    add_bool_arg(parser, 'plot_fancy',                      default=False,         help="use LaTeX for plot labels (slower but nicer fonts)")
+    add_bool_arg(parser, 'show',                            default=True,          help="show plots")
+    add_bool_arg(parser, 'quad',                            default=True,          help="include quadrupole-order terms")
     add_bool_arg(parser, 'oct',                             default=True,          help="include octupole-order terms")
     add_bool_arg(parser, 'hex',                             default=True,          help="include hexadecupole-order terms")
     add_bool_arg(parser, 'hex_cross',                       default=True,          help="include hexadecupole-order cross term")
-    add_bool_arg(parser, 'include_1PN_terms',               default=False,         help="include 1PN terms")
-    add_bool_arg(parser, 'do_nbody',                        default=True,          help="Do N-body integrations as well as partially averaged")
-    add_bool_arg(parser, 'include_backreaction',            default=True,          help="Include backreaction of outer orbit on inner orbits in inner-averaged integrations")
-    add_bool_arg(parser, 'compare_backreaction',            default=False,         help="Special mode comparing cases with backreaction included and not included")
+    add_bool_arg(parser, 'do_nbody',                        default=True,          help="do N-body integrations as well as partially averaged")
+    add_bool_arg(parser, 'include_backreaction',            default=True,          help="include backreaction of outer orbit on inner orbits in inner-averaged integrations")
+    add_bool_arg(parser, 'compare_backreaction',            default=False,         help="special mode comparing cases with backreaction included and not included")
     
     args = parser.parse_args()
 
